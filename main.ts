@@ -1,27 +1,23 @@
-import { Plugin } from 'obsidian';
+import { App, Editor, Modal, Plugin } from 'obsidian';
+import { InsertLinkModal } from './modal';
 
 class PaperSummarizationPlugin extends Plugin {
-    async onload() {
-        this.addCommand({
-            id: 'fetch-and-summarize-papers',
-            name: 'Fetch and Summarize Papers',
-            callback: () => this.fetchAndSummarizePapers(['1805.12345', '1907.54321', '2101.98765']),
-        });
-    }
+  async onload() {
+    this.addCommand({
+      id: 'insert-link',
+      name: 'Insert link',
+      editorCallback: (editor: Editor) => {
+        const selectedText = editor.getSelection();
 
-    async fetchAndSummarizePapers(arxivIds: string[]) {
-        const serverUrl = 'https://api.semanticscholar.org/v1/paper/arXiv';
-        for (const arxivId of arxivIds) {
-            try {
-                const response = await fetch(`${serverUrl}:${arxivId}`);
-                const summary = await response.text();
+        const onSubmit = async (text: string, url: string, summary: string | Promise<string>) => {
+          const summaryResult = await Promise.resolve(summary);
+          editor.replaceSelection(`[${text}](${url})\n[${summaryResult}]`);
+        };
 
-                console.log(summary);
-            } catch (error) {
-                console.error('Failed to fetch or summarize paper:', error);
-            }
-        }
-    }
+        new InsertLinkModal(this.app, selectedText, onSubmit).open();
+      },
+    });
+  }
 }
 
 export default PaperSummarizationPlugin;
