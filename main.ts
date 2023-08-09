@@ -1,4 +1,4 @@
-import { App, Editor, Modal, Plugin } from 'obsidian';
+import { App, Editor, Plugin } from 'obsidian';
 import { InsertLinkModal } from './modal';
 
 class PaperSummarizationPlugin extends Plugin {
@@ -7,14 +7,11 @@ class PaperSummarizationPlugin extends Plugin {
       id: 'insert-link',
       name: 'Insert link',
       editorCallback: (editor: Editor) => {
-        const selectedText = editor.getSelection();
-
-        const onSubmit = async (text: string, url: string, summary: string | Promise<string>) => {
-          const summaryResult = await Promise.resolve(summary);
-          editor.replaceSelection(`[${text}](${url})\n[${summaryResult}]`);
+        const onSubmit = (url: string, summary: string) => {
+          editor.replaceSelection(`[${url}](${url})\n${summary}`);
         };
 
-        new InsertLinkModal(this.app, selectedText, onSubmit).open();
+        new InsertLinkModal(this.app, onSubmit).open();
       },
     });
   }
