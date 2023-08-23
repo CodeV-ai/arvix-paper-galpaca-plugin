@@ -1,7 +1,7 @@
 {
 	"id": "arvix-paper-galpaca-plugin",
-	"name": "ArXiv Paper Importer Paper Summarization GaLPaCa 30b GPTq Plugin",
-	"version": "1.0.0",
+	"name": "ArXiv Paper Importer Paper Summarization Plugin",
+	"version": "1.1.0",
 	"minAppVersion": "0.9.7",
 	"description": "This is a plugin for Obsidian plugin that uses the ArXiv Paper Importer to fetch scientific papers, paired with Paper Summarization to condense findings. Also use GaLPaCa 30b GPTq to automatically summarize these papers",
 	"author": "Codev solutions",
