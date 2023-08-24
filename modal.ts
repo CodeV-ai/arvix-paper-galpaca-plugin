@@ -45,30 +45,28 @@ export class InsertLinkModal extends Modal {
   }
 
   async fetchAndSummarizePapers() {
-  const serverUrl = "http://127.0.0.1:5000/summarize";
+      const serverUrl = "http://127.0.0.1:5000/summarize";
 
-  try {
-    const response = await fetch(serverUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        url: this.linkUrl,
-      }),
-    });
+      try {
+          const response = await fetch(serverUrl, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  url: this.linkUrl,
+              }),
+          });
 
-    const result = await response.json();
-    
+          const result = await response.json();
+          console.log('result', result)
+          const keyphrasesArray = [].concat(...result.keyphrases);
 
-    const keyphrasesString = result.keyphrases[0];
-    const keyphrasesArray = keyphrasesString.split(',').map(keyphrase => keyphrase.trim());
-    
-    return keyphrasesArray.join('\n');
-  } catch (error) {
-    console.error("Failed to fetch or summarize paper:", error);
-    return "Error fetching summary.";
+          return keyphrasesArray.join('\n');
+      } catch (error) {
+          console.error("Failed to fetch or summarize paper:", error);
+          return "Error fetching summary.";
+      }
   }
-}
 
 }
